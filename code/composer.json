@@ -1,0 +1,7 @@
+{
+    "require-dev": {
+        "behat/behat": "~3.0",
+        "symfony/process": "~2.6",
+        "phpunit/phpunit": "~4.5"
+    }
+}
