@@ -2,8 +2,10 @@
 
 error_reporting(E_ALL & ~E_DEPRECATED);
 
+require_once 'vendor/autoload.php';
+
 // open database connection
-$link = mysql_connect('localhost', 'solid', 'R3f@ct0r!ng');
+mysql_connect('localhost', 'solid', 'R3f@ct0r!ng');
 mysql_select_db('solid_refactoring');
 
 // open file
@@ -32,7 +34,7 @@ while ($data = fgetcsv($fh, 1000, ';')) {
     if (!$user) {
         mysql_query("INSERT INTO users (username, password, group_id) VALUES ('{$data[0]}', MD5('{$data[1]}'), {$group['id']})");
     } else {
-        mysql_query("UPDATE users SET password = MD5('{$data[1]}'), group_id = {$group['id']} WHERE username = '{$data[0]}'");
+        mysql_query("UPDATE users SET password = MD5('{$data[1]}'), group_id = {$group['id']} WHERE id = '{$user['id']}'");
     }
 }
 
