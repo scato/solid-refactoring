@@ -1,4 +1,9 @@
 {
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    },
     "require-dev": {
         "behat/behat": "~3.0",
         "symfony/process": "~2.6",
