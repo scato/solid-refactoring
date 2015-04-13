@@ -9,3 +9,4 @@ js/reveal.min.js
 .vagrant
 vendor
 .idea
+*.swp
