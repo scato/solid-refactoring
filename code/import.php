@@ -38,5 +38,6 @@ while ($data = fgetcsv($fh, 1000, ';')) {
     }
 }
 
+// clean up
+fclose($fh);
 mysql_close();
-
