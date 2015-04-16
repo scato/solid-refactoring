@@ -8,15 +8,9 @@ require_once 'vendor/autoload.php';
 mysql_connect('localhost', 'solid', 'R3f@ct0r!ng');
 mysql_select_db('solid_refactoring');
 
-// open file
+// open file, skip header
 $fh = fopen('users.csv', 'r');
-$data = fgetcsv($fh, 1000, ';');
-
-// check header
-$header = array('username', 'password', 'group');
-if ($data != $header) {
-    die("File does not contain the right headers\n");
-}
+fgetcsv($fh, 1000, ';');
 
 // import all the things!
 while ($data = fgetcsv($fh, 1000, ';')) {
@@ -41,3 +35,4 @@ while ($data = fgetcsv($fh, 1000, ';')) {
 // clean up
 fclose($fh);
 mysql_close();
+
