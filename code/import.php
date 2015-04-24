@@ -4,13 +4,13 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 
 require_once 'vendor/autoload.php';
 
-// open database connection
-mysql_connect('localhost', 'solid', 'R3f@ct0r!ng');
-mysql_select_db('solid_refactoring');
-
 // open file, skip header
 $fh = fopen('users.csv', 'r');
 fgetcsv($fh, 1000, ';');
+
+// open database connection
+mysql_connect('localhost', 'solid', 'R3f@ct0r!ng');
+mysql_select_db('solid_refactoring');
 
 // import all the things!
 while ($data = fgetcsv($fh, 1000, ';')) {
@@ -35,4 +35,3 @@ while ($data = fgetcsv($fh, 1000, ';')) {
 // clean up
 fclose($fh);
 mysql_close();
-
