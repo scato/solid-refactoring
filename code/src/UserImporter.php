@@ -5,15 +5,14 @@ class UserImporter
     public function import()
     {
         // open file, skip header
-        $fh = fopen('users.csv', 'r');
-        fgetcsv($fh, 1000, ';');
+        $fileReader = new CsvFileReader();
 
         // open database connection
         mysql_connect('localhost', 'solid', 'R3f@ct0r!ng');
         mysql_select_db('solid_refactoring');
 
         // import all the things!
-        while ($data = fgetcsv($fh, 1000, ';')) {
+        while ($data = $fileReader->readData()) {
             $result = mysql_query("SELECT * FROM groups WHERE name = '{$data[2]}'");
             $group = mysql_fetch_assoc($result);
 
@@ -33,7 +32,7 @@ class UserImporter
         }
 
         // clean up
-        fclose($fh);
+        $fileReader->close();
         mysql_close();
     }
 }
