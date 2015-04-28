@@ -8,31 +8,31 @@ class UserImporter
         $fileReader = new CsvFileReader();
 
         // open database connection
-        mysql_connect('localhost', 'solid', 'R3f@ct0r!ng');
-        mysql_select_db('solid_refactoring');
+        $gateway = new MysqlGateway();
 
         // import all the things!
         while ($data = $fileReader->readData()) {
-            $result = mysql_query("SELECT * FROM groups WHERE name = '{$data[2]}'");
-            $group = mysql_fetch_assoc($result);
+            $username = $data[0];
+            $password = $data[1];
+            $groupName = $data[2];
+
+            $group = $gateway->findGroupByName($groupName);
 
             if (!$group) {
-                mysql_query("INSERT INTO groups (name) VALUES ('{$data[2]}')");
-                $group = array('id' => mysql_insert_id(), 'name' => $data[2]);
+                $group = $gateway->createGroup($groupName);
             }
 
-            $result = mysql_query("SELECT * FROM users WHERE username = '{$data[0]}'");
-            $user = mysql_fetch_assoc($result);
+            $user = $gateway->findUserByUsername($username);
 
             if (!$user) {
-                mysql_query("INSERT INTO users (username, password, group_id) VALUES ('{$data[0]}', MD5('{$data[1]}'), {$group['id']})");
+                $gateway->createUser($username, $password, $group['id']);
             } else {
-                mysql_query("UPDATE users SET password = MD5('{$data[1]}'), group_id = {$group['id']} WHERE id = '{$user['id']}'");
+                $gateway->updateUser($password, $group['id'], $user['id']);
             }
         }
 
         // clean up
         $fileReader->close();
-        mysql_close();
+        $gateway->close();
     }
 }
