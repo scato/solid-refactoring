@@ -2,37 +2,43 @@
 
 class UserImporter
 {
-    public function import()
+    private $fileReader;
+    private $gateway;
+
+    public function __construct()
     {
         // open file, skip header
-        $fileReader = new CsvFileReader();
+        $this->fileReader = new CsvFileReader();
 
         // open database connection
-        $gateway = new MysqlGateway();
+        $this->gateway = new MysqlGateway();
+    }
 
+    public function import()
+    {
         // import all the things!
-        while ($data = $fileReader->readData()) {
+        while ($data = $this->fileReader->readData()) {
             $username = $data[0];
             $password = $data[1];
             $groupName = $data[2];
 
-            $group = $gateway->findGroupByName($groupName);
+            $group = $this->gateway->findGroupByName($groupName);
 
             if (!$group) {
-                $group = $gateway->createGroup($groupName);
+                $group = $this->gateway->createGroup($groupName);
             }
 
-            $user = $gateway->findUserByUsername($username);
+            $user = $this->gateway->findUserByUsername($username);
 
             if (!$user) {
-                $gateway->createUser($username, $password, $group['id']);
+                $this->gateway->createUser($username, $password, $group['id']);
             } else {
-                $gateway->updateUser($password, $group['id'], $user['id']);
+                $this->gateway->updateUser($password, $group['id'], $user['id']);
             }
         }
 
         // clean up
-        $fileReader->close();
-        $gateway->close();
+        $this->fileReader->close();
+        $this->gateway->close();
     }
 }
