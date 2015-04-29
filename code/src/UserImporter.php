@@ -8,10 +8,12 @@ class UserImporter
     public function __construct()
     {
         // open file, skip header
-        $this->fileReader = new CsvFileReader();
-
+        $fileReader = new CsvFileReader();
         // open database connection
-        $this->gateway = new MysqlGateway();
+        $gateway = new MysqlGateway();
+
+        $this->fileReader = $fileReader;
+        $this->gateway = $gateway;
     }
 
     public function import()
