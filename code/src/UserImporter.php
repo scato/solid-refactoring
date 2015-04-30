@@ -5,7 +5,7 @@ class UserImporter
     private $fileReader;
     private $gateway;
 
-    public function __construct(FileReaderInterface $fileReader, MysqlGateway $gateway)
+    public function __construct(FileReaderInterface $fileReader, GatewayInterface $gateway)
     {
         $this->fileReader = $fileReader;
         $this->gateway = $gateway;
