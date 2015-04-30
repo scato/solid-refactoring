@@ -2,19 +2,19 @@
 
 class UserImporter
 {
-    private $fileReader;
+    private $dataReader;
     private $gateway;
 
-    public function __construct(FileReaderInterface $fileReader, GatewayInterface $gateway)
+    public function __construct(DataReaderInterface $dataReader, GatewayInterface $gateway)
     {
-        $this->fileReader = $fileReader;
+        $this->dataReader = $dataReader;
         $this->gateway = $gateway;
     }
 
     public function import()
     {
         // import all the things!
-        while ($data = $this->fileReader->readData()) {
+        while ($data = $this->dataReader->readData()) {
             $username = $data[0];
             $password = $data[1];
             $groupName = $data[2];
@@ -35,7 +35,12 @@ class UserImporter
         }
 
         // clean up
-        $this->fileReader->close();
-        $this->gateway->close();
+        if ($this->dataReader instanceof CloseableInterface) {
+            $this->dataReader->close();
+        }
+
+        if ($this->gateway instanceof CloseableInterface) {
+            $this->gateway->close();
+        }
     }
 }
