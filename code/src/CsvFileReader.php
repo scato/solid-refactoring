@@ -1,6 +1,6 @@
 <?php
 
-class CsvFileReader
+class CsvFileReader implements FileReaderInterface
 {
     private $fh;
 
