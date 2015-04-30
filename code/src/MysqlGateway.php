@@ -1,6 +1,6 @@
 <?php
 
-class MysqlGateway
+class MysqlGateway implements GatewayInterface
 {
     public function __construct()
     {
