@@ -1,6 +1,6 @@
 <?php
 
-class MysqlGateway implements GatewayInterface
+class MysqlGateway implements GatewayInterface, CloseableInterface
 {
     public function __construct()
     {
